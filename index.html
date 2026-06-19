@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>get.ifuri.com - urirun node installer</title>
+  <meta name="description" content="One-liner installer for urirun node computers in the if-uri mesh.">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --ink: #16191f;
+      --muted: #596272;
+      --line: #d8dee8;
+      --panel: #ffffff;
+      --accent: #0f766e;
+      --accent-2: #1d4ed8;
+      --code: #101828;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: start;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 32px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 1px solid #9cc9c4;
+      border-radius: 8px;
+      background: #e6f6f3;
+      color: #075e58;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 32px 0 12px;
+      font-size: clamp(2.2rem, 5vw, 4.6rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .status {
+      min-width: 220px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .status strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .status span {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    section {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 22px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 0;
+      padding: 16px;
+      background: var(--code);
+      color: #f4f7fb;
+      border-radius: 8px;
+      font-size: .94rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fbfcfe;
+    }
+
+    .step b {
+      display: block;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+      font-weight: 650;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 840px) {
+      header,
+      .grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        width: min(100% - 24px, 1080px);
+        padding: 28px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="brand"><span class="mark">if</span> get.ifuri.com</div>
+        <h1>Uruchom komputer node przez jeden URI-ready installer.</h1>
+        <p class="lead">
+          Ten endpoint instaluje `urirun` z GitHuba, generuje lokalne bindings i registry,
+          a potem startuje `urirun node`, ktory host moze odkryc i wywolywac przez URI flow.
+        </p>
+      </div>
+      <aside class="status">
+        <strong>Default node</strong>
+        <span>port 8765, bind 0.0.0.0, registry w ~/.urirun-node</span>
+      </aside>
+    </header>
+
+    <div class="grid">
+      <section>
+        <h2>Install + run</h2>
+        <p>Na komputerze node uruchom w foreground:</p>
+        <pre><code>curl -fsSL https://get.ifuri.com/node.sh | bash</code></pre>
+      </section>
+
+      <section>
+        <h2>Background node</h2>
+        <p>Instalacja z nazwą i portem, po czym proces zostaje w tle:</p>
+        <pre><code>curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --port 8765 --background</code></pre>
+      </section>
+
+      <section>
+        <h2>Host registration</h2>
+        <p>Na komputerze host dodaj node do mesh:</p>
+        <pre><code>urirun host init --name host
+urirun host add-node laptop http://NODE_IP:8765
+urirun host nodes
+urirun host routes
+urirun host agents</code></pre>
+      </section>
+
+      <section>
+        <h2>NL to URI flow</h2>
+        <p>Host moze wygenerowac i wykonac flow po dostepnych trasach URI:</p>
+        <pre><code>urirun host ask "sprawdz stan laptopa i zapisz notatke" --execute</code></pre>
+      </section>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <b>1. Install</b>
+        <span>Tworzy venv i instaluje `urirun` z `tellmesh/urirun`.</span>
+      </div>
+      <div class="step">
+        <b>2. Registry</b>
+        <span>Generuje bindings v2 i kompiluje lokalne URI registry.</span>
+      </div>
+      <div class="step">
+        <b>3. Serve</b>
+        <span>Wystawia `/routes`, `/mcp/tools`, `/a2a/card` i `/run`.</span>
+      </div>
+    </div>
+
+    <div class="links">
+      <a href="node.sh">node.sh</a>
+      <a href="https://github.com/if-uri/get">GitHub repo</a>
+      <a href="https://if-uri.github.io/get/node.sh">Fallback Pages URL</a>
+    </div>
+  </main>
+</body>
+</html>
