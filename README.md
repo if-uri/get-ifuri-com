@@ -110,13 +110,13 @@ After starting (`--background` or `--service`), the installer health-checks
 
 ## Pinned urirun version
 
-`node.sh` pins the installed `urirun` to a released tag (default `v0.3.12`) for
+`node.sh` pins the installed `urirun` to a released tag (default `v0.3.13`) for
 reproducible installs rather than tracking `@main`. Override it with the
 `URIRUN_REF` environment variable (a git tag or branch), or `URIRUN_GIT_URL` for
 a custom source:
 
 ```bash
-curl -fsSL https://get.ifuri.com/node.sh | URIRUN_REF=v0.3.12 bash
+curl -fsSL https://get.ifuri.com/node.sh | URIRUN_REF=v0.3.13 bash
 ```
 
 The Windows installer (`node.ps1`) pins the same default and accepts `-Ref` (or
