@@ -25,6 +25,26 @@ Custom name and port:
 curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --port 8765 --background
 ```
 
+Boot service (Linux `systemd --user` / macOS `launchd`), survives reboot:
+
+```bash
+curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --service
+```
+
+Upgrade an existing install in place (reuses the venv, restarts if running):
+
+```bash
+curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --upgrade
+```
+
+Windows (PowerShell):
+
+```powershell
+irm https://get.ifuri.com/node.ps1 | iex
+# named node + boot service (logon Scheduled Task):
+# powershell -ExecutionPolicy Bypass -File node.ps1 -Name laptop -Service
+```
+
 The installer creates:
 
 - `~/.urirun-node/.venv` with the `urirun` CLI installed from GitHub,
@@ -78,10 +98,29 @@ export OPENAI_API_KEY=...
 --dir PATH        Install directory. Default: ~/.urirun-node.
 --python PATH     Python executable. Default: python3.
 --background      Start node with nohup and return.
+--service         Install + enable a boot service (systemd --user / launchd) and start it.
 --dry-run         Start the node in non-executing mode.
 --no-start        Install and configure, but do not start the node.
+--upgrade         Reuse existing venv: upgrade urirun, recompile, restart if running.
 --help            Show help.
 ```
+
+After starting (`--background` or `--service`), the installer health-checks
+`http://127.0.0.1:PORT/health` and prints the LAN URL and URI routes.
+
+## Pinned urirun version
+
+`node.sh` pins the installed `urirun` to a released tag (default `v0.3.12`) for
+reproducible installs rather than tracking `@main`. Override it with the
+`URIRUN_REF` environment variable (a git tag or branch), or `URIRUN_GIT_URL` for
+a custom source:
+
+```bash
+curl -fsSL https://get.ifuri.com/node.sh | URIRUN_REF=v0.3.12 bash
+```
+
+The Windows installer (`node.ps1`) pins the same default and accepts `-Ref` (or
+`URIRUN_REF`).
 
 ## Fallback URL
 
