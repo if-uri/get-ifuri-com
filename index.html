@@ -4,18 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>get.ifuri.com - urirun node installer</title>
-  <meta name="description" content="One-liner installer for urirun node computers in the if-uri mesh.">
+  <meta name="description" content="One-line installer for urirun node computers in the if-uri mesh.">
   <style>
     :root {
       color-scheme: light;
-      --bg: #f7f8fa;
-      --ink: #16191f;
-      --muted: #596272;
-      --line: #d8dee8;
+      --bg: #f6f8fb;
+      --ink: #141821;
+      --muted: #5f6b7a;
+      --line: #d9e0ea;
       --panel: #ffffff;
+      --soft: #eef5f4;
       --accent: #0f766e;
-      --accent-2: #1d4ed8;
-      --code: #101828;
+      --accent-ink: #063f3a;
+      --blue: #1d4ed8;
+      --code: #0f172a;
+      --code-line: #23304a;
+      --ok: #166534;
     }
 
     * {
@@ -31,106 +35,110 @@
     }
 
     main {
-      width: min(1080px, calc(100% - 32px));
+      width: min(100% - 28px, 760px);
       margin: 0 auto;
-      padding: 48px 0;
+      padding: 28px 0 44px;
     }
 
     header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 28px;
-      align-items: start;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 32px;
+      padding: 10px 0 22px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      letter-spacing: 0;
+      gap: 11px;
+      margin-bottom: 24px;
+      font-weight: 750;
     }
 
     .mark {
       display: grid;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       place-items: center;
       border: 1px solid #9cc9c4;
       border-radius: 8px;
       background: #e6f6f3;
-      color: #075e58;
-      font-weight: 800;
+      color: var(--accent-ink);
+      font-weight: 850;
     }
 
     h1 {
-      max-width: 760px;
-      margin: 32px 0 12px;
-      font-size: clamp(2.2rem, 5vw, 4.6rem);
-      line-height: 1;
+      margin: 0 0 12px;
+      font-size: 2.55rem;
+      line-height: 1.04;
       letter-spacing: 0;
     }
 
     .lead {
-      max-width: 780px;
       margin: 0;
       color: var(--muted);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
-    .status {
-      min-width: 220px;
-      border: 1px solid var(--line);
-      background: var(--panel);
+    .quick-note {
+      margin-top: 18px;
+      padding: 13px 14px;
+      border: 1px solid #bcdad6;
       border-radius: 8px;
-      padding: 16px;
+      background: var(--soft);
+      color: var(--accent-ink);
+      font-size: .95rem;
     }
 
-    .status strong {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .status span {
-      color: var(--muted);
-      font-size: .92rem;
-    }
-
-    .grid {
+    .stack {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 28px;
+      gap: 14px;
+      margin-top: 20px;
     }
 
     section {
       border: 1px solid var(--line);
       background: var(--panel);
       border-radius: 8px;
-      padding: 22px;
+      padding: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
     h2 {
-      margin: 0 0 10px;
-      font-size: 1.15rem;
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.25;
       letter-spacing: 0;
     }
 
+    .eyebrow {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 760;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+
     p {
-      margin: 0 0 16px;
+      margin: 0 0 12px;
       color: var(--muted);
     }
 
     pre {
       overflow-x: auto;
       margin: 0;
-      padding: 16px;
+      padding: 14px;
       background: var(--code);
-      color: #f4f7fb;
+      color: #f6f8fb;
       border-radius: 8px;
-      font-size: .94rem;
+      border: 1px solid var(--code-line);
+      font-size: .92rem;
       line-height: 1.5;
       white-space: pre-wrap;
       word-break: break-word;
@@ -140,53 +148,130 @@
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+    button {
+      min-height: 42px;
+      border: 1px solid #b9c4d3;
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      font-size: .94rem;
+      font-weight: 700;
+      padding: 9px 13px;
+      white-space: nowrap;
     }
 
-    .step {
+    button:hover {
+      border-color: #8ea0b8;
+      background: #f7f9fc;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #b8d8ff;
+      outline-offset: 2px;
+    }
+
+    button[data-state="copied"] {
+      border-color: #9bd0a5;
+      background: #edf8ef;
+      color: var(--ok);
+    }
+
+    .primary-copy {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .primary-copy:hover {
+      background: #0b625b;
+      border-color: #0b625b;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .link-list + .small {
+      margin-top: 12px;
+    }
+
+    .link-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 11px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 16px;
       background: #fbfcfe;
     }
 
-    .step b {
-      display: block;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
     a {
-      color: var(--accent-2);
+      min-width: 0;
+      color: var(--blue);
+      overflow-wrap: anywhere;
       text-decoration: none;
-      font-weight: 650;
+      font-weight: 680;
     }
 
     a:hover {
       text-decoration: underline;
     }
 
-    @media (max-width: 840px) {
-      header,
-      .grid,
-      .steps {
+    .small {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .status-line {
+      min-height: 24px;
+      margin: 14px 0 0;
+      color: var(--ok);
+      font-size: .92rem;
+      font-weight: 650;
+    }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        width: min(100% - 22px, 760px);
+        padding-top: 18px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .lead {
+        font-size: 1rem;
+      }
+
+      section {
+        padding: 15px;
+      }
+
+      .section-head,
+      .link-item {
         grid-template-columns: 1fr;
       }
 
-      main {
-        width: min(100% - 24px, 1080px);
-        padding: 28px 0;
+      .section-head {
+        display: grid;
+      }
+
+      button {
+        width: 100%;
       }
     }
   </style>
@@ -194,37 +279,51 @@
 <body>
   <main>
     <header>
-      <div>
-        <div class="brand"><span class="mark">if</span> get.ifuri.com</div>
-        <h1>Uruchom komputer node przez jeden URI-ready installer.</h1>
-        <p class="lead">
-          Ten endpoint instaluje `urirun` z GitHuba, generuje lokalne bindings i registry,
-          a potem startuje `urirun node`, ktory host moze odkryc i wywolywac przez URI flow.
-        </p>
+      <div class="brand"><span class="mark">if</span> get.ifuri.com</div>
+      <h1>Uruchom komputer node jednym poleceniem.</h1>
+      <p class="lead">
+        Pobierz installer, wygeneruj lokalne URI bindings i wystaw `urirun node`
+        dla hosta, MCP, A2A oraz URI flow.
+      </p>
+      <div class="quick-note">
+        Domyslnie: port 8765, bind 0.0.0.0, pliki w ~/.urirun-node.
+        Jesli port jest zajety, installer wybierze kolejny wolny port.
       </div>
-      <aside class="status">
-        <strong>Default node</strong>
-        <span>port 8765, bind 0.0.0.0, registry w ~/.urirun-node</span>
-      </aside>
+      <p class="status-line" id="copy-status" role="status" aria-live="polite"></p>
     </header>
 
-    <div class="grid">
+    <div class="stack">
       <section>
-        <h2>Install + run</h2>
-        <p>Na komputerze node uruchom w foreground:</p>
-        <pre><code>curl -fsSL https://get.ifuri.com/node.sh | bash</code></pre>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Node</span>
+            <h2>Install + run w foreground</h2>
+          </div>
+          <button class="primary-copy" type="button" data-copy-target="cmd-install">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-install">curl -fsSL https://get.ifuri.com/node.sh | bash</code></pre>
       </section>
 
       <section>
-        <h2>Background node</h2>
-        <p>Instalacja z nazwą i portem, po czym proces zostaje w tle:</p>
-        <pre><code>curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --port 8765 --background</code></pre>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Node</span>
+            <h2>Install + run w tle</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-background">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-background">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --background</code></pre>
       </section>
 
       <section>
-        <h2>Host registration</h2>
-        <p>Na komputerze host dodaj node do mesh:</p>
-        <pre><code>urirun host init --name host
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Host</span>
+            <h2>Dodaj node do mesh</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-host">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-host">urirun host init --name host
 urirun host add-node laptop http://NODE_IP:8765
 urirun host nodes
 urirun host routes
@@ -232,32 +331,103 @@ urirun host agents</code></pre>
       </section>
 
       <section>
-        <h2>NL to URI flow</h2>
-        <p>Host moze wygenerowac i wykonac flow po dostepnych trasach URI:</p>
-        <pre><code>urirun host ask "sprawdz stan laptopa i zapisz notatke" --execute</code></pre>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Flow</span>
+            <h2>NL do URI flow</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-flow">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-flow">urirun host ask "sprawdz stan laptopa i zapisz notatke" --execute</code></pre>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Links</span>
+            <h2>Linki do skopiowania</h2>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li class="link-item">
+            <a href="https://get.ifuri.com/node.sh" id="url-script">https://get.ifuri.com/node.sh</a>
+            <button type="button" data-copy-text="https://get.ifuri.com/node.sh">Kopiuj URL</button>
+          </li>
+          <li class="link-item">
+            <a href="https://github.com/if-uri/get" id="url-repo">https://github.com/if-uri/get</a>
+            <button type="button" data-copy-text="https://github.com/if-uri/get">Kopiuj URL</button>
+          </li>
+          <li class="link-item">
+            <a href="https://raw.githubusercontent.com/if-uri/get/main/node.sh" id="url-raw">https://raw.githubusercontent.com/if-uri/get/main/node.sh</a>
+            <button type="button" data-copy-text="https://raw.githubusercontent.com/if-uri/get/main/node.sh">Kopiuj URL</button>
+          </li>
+        </ul>
+        <p class="small">Raw GitHub URL zostaje jako awaryjny fallback, gdy domena lub Plesk sa niedostepne.</p>
       </section>
     </div>
 
-    <div class="steps">
-      <div class="step">
-        <b>1. Install</b>
-        <span>Tworzy venv i instaluje `urirun` z `tellmesh/urirun`.</span>
-      </div>
-      <div class="step">
-        <b>2. Registry</b>
-        <span>Generuje bindings v2 i kompiluje lokalne URI registry.</span>
-      </div>
-      <div class="step">
-        <b>3. Serve</b>
-        <span>Wystawia `/routes`, `/mcp/tools`, `/a2a/card` i `/run`.</span>
-      </div>
-    </div>
-
-    <div class="links">
-      <a href="node.sh">node.sh</a>
-      <a href="https://github.com/if-uri/get">GitHub repo</a>
-      <a href="https://raw.githubusercontent.com/if-uri/get/main/node.sh">Raw GitHub fallback</a>
-    </div>
+    <footer>
+      `node.sh` instaluje `urirun` z GitHuba, tworzy bindings v2, kompiluje registry i startuje lokalny node HTTP.
+    </footer>
   </main>
+
+  <script>
+    const statusLine = document.getElementById('copy-status');
+
+    function copyTextFallback(text) {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.left = '-9999px';
+      document.body.appendChild(field);
+      field.select();
+      document.execCommand('copy');
+      field.remove();
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      copyTextFallback(text);
+    }
+
+    function textForButton(button) {
+      if (button.dataset.copyText) {
+        return button.dataset.copyText;
+      }
+      const target = document.getElementById(button.dataset.copyTarget);
+      return target ? target.textContent.trim() : '';
+    }
+
+    document.addEventListener('click', async (event) => {
+      const button = event.target.closest('button[data-copy-target], button[data-copy-text]');
+      if (!button) {
+        return;
+      }
+
+      const text = textForButton(button);
+      if (!text) {
+        return;
+      }
+
+      const label = button.textContent;
+      try {
+        await copyText(text);
+        button.textContent = 'Skopiowano';
+        button.dataset.state = 'copied';
+        statusLine.textContent = 'Skopiowano do schowka.';
+      } catch (error) {
+        statusLine.textContent = 'Nie udalo sie skopiowac. Zaznacz tekst recznie.';
+      }
+
+      window.setTimeout(() => {
+        button.textContent = label;
+        button.removeAttribute('data-state');
+      }, 1600);
+    });
+  </script>
 </body>
 </html>
