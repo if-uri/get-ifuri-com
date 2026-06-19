@@ -13,6 +13,7 @@ BACKGROUND=0
 EXECUTE=1
 PORT_EXPLICIT=0
 UPGRADE=0
+SERVICE=0
 
 usage() {
   cat <<'USAGE'
@@ -29,6 +30,7 @@ Options:
   --dir PATH        Install directory. Default: ~/.urirun-node.
   --python PATH     Python executable. Default: python3.
   --background      Start node with nohup and return.
+  --service         Install + enable a boot service (systemd --user / launchd) and start it.
   --dry-run         Start node without executing command routes.
   --no-start        Install and configure, but do not start the node.
   --upgrade         Reuse existing venv: upgrade urirun, recompile, restart if running.
@@ -99,6 +101,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --upgrade)
       UPGRADE=1
+      shift
+      ;;
+    --service)
+      SERVICE=1
       shift
       ;;
     --help|-h)
@@ -358,6 +364,72 @@ printf 'urirun host add-node %s http://%s:%s\n\n' "$NODE_NAME" "$NODE_IP" "$PORT
 
 if [ "$START_NODE" -eq 0 ]; then
   printf '==> Not starting node because --no-start was used.\n'
+  exit 0
+fi
+
+if [ "$SERVICE" -eq 1 ]; then
+  OS="$(uname -s 2>/dev/null || echo unknown)"
+  case "$OS" in
+    Linux)
+      command -v systemctl >/dev/null 2>&1 || die "--service needs systemd (systemctl not found); use --background"
+      UNIT_DIR="$HOME/.config/systemd/user"
+      mkdir -p "$UNIT_DIR"
+      cat > "$UNIT_DIR/urirun-node.service" <<UNIT
+[Unit]
+Description=urirun node ($NODE_NAME)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=$RUNNER
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+UNIT
+      systemctl --user daemon-reload
+      systemctl --user enable --now urirun-node.service
+      loginctl enable-linger "$USER" >/dev/null 2>&1 || true
+      printf '==> systemd user service enabled: urirun-node.service (survives reboot)\n'
+      printf '    logs:  journalctl --user -u urirun-node -f\n'
+      printf '    stop:  systemctl --user disable --now urirun-node.service\n'
+      ;;
+    Darwin)
+      PLIST_DIR="$HOME/Library/LaunchAgents"
+      mkdir -p "$PLIST_DIR"
+      PLIST="$PLIST_DIR/com.ifuri.urirun-node.plist"
+      cat > "$PLIST" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.ifuri.urirun-node</string>
+  <key>ProgramArguments</key><array><string>$RUNNER</string></array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>$LOG_FILE</string>
+  <key>StandardErrorPath</key><string>$LOG_FILE</string>
+</dict></plist>
+PLIST
+      launchctl unload "$PLIST" >/dev/null 2>&1 || true
+      launchctl load "$PLIST"
+      printf '==> launchd agent loaded: com.ifuri.urirun-node (survives reboot)\n'
+      printf '    stop:  launchctl unload %s\n' "$PLIST"
+      ;;
+    *)
+      die "--service not supported on $OS; use --background (Windows: get.ifuri.com/node.ps1)"
+      ;;
+  esac
+  printf '==> Waiting for node health on 127.0.0.1:%s ...\n' "$PORT"
+  for _ in $(seq 1 20); do
+    if "$VENV_DIR/bin/python" -c "import urllib.request,sys; urllib.request.urlopen('http://127.0.0.1:$PORT/health',timeout=1).read()" >/dev/null 2>&1; then
+      printf '==> Node healthy. LAN: http://%s:%s/  (health: /health)\n' "$NODE_IP" "$PORT"
+      exit 0
+    fi
+    sleep 0.5
+  done
+  printf '==> Warning: node not healthy yet; check the service logs.\n'
   exit 0
 fi
 
