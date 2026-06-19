@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-URIRUN_REF="${URIRUN_REF:-v0.3.11}"
+URIRUN_REF="${URIRUN_REF:-v0.3.12}"
 URIRUN_GIT_URL="${URIRUN_GIT_URL:-git+https://github.com/tellmesh/urirun.git@${URIRUN_REF}#subdirectory=adapters/python}"
 INSTALL_DIR="${URIRUN_NODE_DIR:-$HOME/.urirun-node}"
 NODE_NAME="${URIRUN_NODE_NAME:-$(hostname 2>/dev/null || echo node)}"
@@ -33,7 +33,7 @@ Options:
   --help            Show this help.
 
 Environment:
-  URIRUN_REF        Git tag or branch for the default urirun source. Default: v0.3.11.
+  URIRUN_REF        Git tag or branch for the default urirun source. Default: v0.3.12.
   URIRUN_GIT_URL    Git source for urirun Python package.
   URIRUN_NODE_DIR   Install directory.
   URIRUN_NODE_NAME  Node name.
