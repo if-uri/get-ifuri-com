@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>get.ifuri.com - urirun node installer</title>
-  <meta name="description" content="One-line installer for urirun node computers in the if-uri mesh.">
+  <title>get.ifuri.com - urirun host and node installers</title>
+  <meta name="description" content="One-line installers for urirun host and node computers in the if-uri mesh.">
   <style>
     :root {
       color-scheme: dark;
@@ -97,6 +97,39 @@
       display: grid;
       gap: 14px;
       margin-top: 20px;
+    }
+
+    .role-list,
+    .command-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .role-row,
+    .command-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .role-row:first-child,
+    .command-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .role-title {
+      margin: 0 0 4px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .role-desc {
+      margin: 0;
+      font-size: var(--fs-sm);
     }
 
     section {
@@ -268,7 +301,9 @@
       }
 
       .section-head,
-      .link-item {
+      .link-item,
+      .role-row,
+      .command-row {
         grid-template-columns: 1fr;
       }
 
@@ -284,22 +319,22 @@
   <link rel="canonical" href="https://get.ifuri.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://get.ifuri.com/" />
-  <meta property="og:title" content="get.ifuri.com - urirun node installer" />
-  <meta property="og:description" content="One-line installer for urirun node computers in the if-uri mesh." />
+  <meta property="og:title" content="get.ifuri.com - urirun host and node installers" />
+  <meta property="og:description" content="One-line installers for urirun host and node computers in the if-uri mesh." />
   <meta property="og:image" content="https://ifuri.com/assets/og-ifuri.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="get.ifuri.com - urirun node installer" />
-  <meta name="twitter:description" content="One-line installer for urirun node computers in the if-uri mesh." />
+  <meta name="twitter:title" content="get.ifuri.com - urirun host and node installers" />
+  <meta name="twitter:description" content="One-line installers for urirun host and node computers in the if-uri mesh." />
   <meta name="twitter:image" content="https://ifuri.com/assets/og-ifuri.png" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "get.ifuri.com - urirun node installer",
-  "name": "get.ifuri.com - urirun node installer",
-  "description": "One-line installer for urirun node computers in the if-uri mesh.",
+  "headline": "get.ifuri.com - urirun host and node installers",
+  "name": "get.ifuri.com - urirun host and node installers",
+  "description": "One-line installers for urirun host and node computers in the if-uri mesh.",
   "url": "https://get.ifuri.com/",
   "isPartOf": {
     "@type": "WebSite",
@@ -313,20 +348,161 @@
   <main>
     <header>
       <div class="brand"><span class="mark">if</span> get.ifuri.com</div>
-      <h1>Uruchom komputer node jednym poleceniem.</h1>
+      <h1>Zainstaluj hosta albo node jednym poleceniem.</h1>
       <p class="lead">
-        Pobierz installer, wygeneruj lokalne URI bindings i wystaw `urirun node`
-        dla hosta, MCP, A2A oraz URI flow.
+        Host steruje siecią i uruchamia flow, node wystawia lokalne URI endpointy,
+        MCP oraz A2A dla hosta i aplikacji ifURI.
       </p>
       <div class="quick-note">
-        Domyslnie: port 8765, bind 0.0.0.0, pliki w ~/.urirun-node.
-        Jesli port jest zajety, installer wybierze kolejny wolny port.
-        Nazwa uslugi: urirun-node, albo URIRUN_NODE_SERVICE_NAME.
+        Node: port 8765, bind 0.0.0.0, pliki w ~/.urirun-node.
+        Host: mesh w ~/.urirun-host i komendy `urirun host ...`.
+        Jeśli port jest zajęty, instalator node wybierze kolejny wolny port.
       </div>
       <p class="status-line" id="copy-status" role="status" aria-live="polite"></p>
     </header>
 
     <div class="stack">
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Role</span>
+            <h2>Wybierz, co instalujesz</h2>
+          </div>
+        </div>
+        <div class="role-list">
+          <div class="role-row">
+            <div>
+              <p class="role-title">Host</p>
+              <p class="role-desc">Komputer operatora. Trzyma mesh, listę node'ów, routy, agentów i uruchamia flow.</p>
+            </div>
+            <button class="primary-copy" type="button" data-copy-target="cmd-host-install">Kopiuj host</button>
+          </div>
+          <div class="role-row">
+            <div>
+              <p class="role-title">Node</p>
+              <p class="role-desc">Komputer wykonawczy. Wystawia lokalny rejestr URI, MCP, A2A i endpoint HTTP.</p>
+            </div>
+            <button type="button" data-copy-target="cmd-node-background">Kopiuj node</button>
+          </div>
+          <div class="role-row">
+            <div>
+              <p class="role-title">Aplikacja</p>
+              <p class="role-desc">Interfejs operatora do hosta, node'ów, tras URI, MCP/A2A i zadań LLM.</p>
+            </div>
+            <a href="app/" rel="noopener">Otwórz app</a>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Host</span>
+            <h2>Komputer sterujący</h2>
+          </div>
+          <button class="primary-copy" type="button" data-copy-target="cmd-host-install">Kopiuj</button>
+        </div>
+        <p>Uruchom na komputerze, z którego chcesz zarządzać node'ami i flow.</p>
+        <pre><code id="cmd-host-install">curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio</code></pre>
+        <div class="command-list">
+          <div class="command-row">
+            <div>
+              <p class="role-title">Host z dodaniem node'a</p>
+              <p class="role-desc">Użyj, gdy znasz adres node'a w LAN.</p>
+            </div>
+            <button type="button" data-copy-target="cmd-host-add">Kopiuj</button>
+          </div>
+          <pre><code id="cmd-host-add">curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio --add-node laptop=http://NODE_IP:8765</code></pre>
+          <div class="command-row">
+            <div>
+              <p class="role-title">Komendy po instalacji</p>
+              <p class="role-desc">Lista node'ów, tras URI, agentów MCP/A2A i dashboard.</p>
+            </div>
+            <button type="button" data-copy-target="cmd-host-admin">Kopiuj</button>
+          </div>
+          <pre><code id="cmd-host-admin">~/.urirun-host/.venv/bin/urirun host nodes --config ~/.urirun-host/mesh.json
+~/.urirun-host/.venv/bin/urirun host routes --config ~/.urirun-host/mesh.json
+~/.urirun-host/.venv/bin/urirun host agents --config ~/.urirun-host/mesh.json
+~/.urirun-host/.venv/bin/urirun host dashboard serve --config ~/.urirun-host/mesh.json</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Node</span>
+            <h2>Komputer wykonawczy</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-node-background">Kopiuj</button>
+        </div>
+        <p>Uruchom na laptopie, serwerze lub maszynie, która ma wykonywać komendy URI.</p>
+        <pre><code id="cmd-node-background">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --background</code></pre>
+        <div class="command-list">
+          <div class="command-row">
+            <div>
+              <p class="role-title">Foreground</p>
+              <p class="role-desc">Szybki test w terminalu.</p>
+            </div>
+            <button type="button" data-copy-target="cmd-node-foreground">Kopiuj</button>
+          </div>
+          <pre><code id="cmd-node-foreground">curl -fsSL https://get.ifuri.com/node.sh | bash</code></pre>
+          <div class="command-row">
+            <div>
+              <p class="role-title">Boot service</p>
+              <p class="role-desc">Linux systemd user lub macOS launchd, start po restarcie.</p>
+            </div>
+            <button type="button" data-copy-target="cmd-node-service">Kopiuj</button>
+          </div>
+          <pre><code id="cmd-node-service">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --service</code></pre>
+          <div class="command-row">
+            <div>
+              <p class="role-title">Node z connectorami</p>
+              <p class="role-desc">Od razu dodaje trasy HTTP check i time-tools do registry.</p>
+            </div>
+            <button type="button" data-copy-target="cmd-node-connectors">Kopiuj</button>
+          </div>
+          <pre><code id="cmd-node-connectors">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --connectors http-check,time-tools --background</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Windows</span>
+            <h2>Node na Windows</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-windows">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-windows">irm https://get.ifuri.com/node.ps1 | iex</code></pre>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">LAN</span>
+            <h2>Minimalny przepływ host + node</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-lan-flow">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-lan-flow"># 1. Na komputerze node:
+curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --background
+
+# 2. Na komputerze host:
+curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio --add-node laptop=http://NODE_IP:8765
+~/.urirun-host/.venv/bin/urirun host routes --config ~/.urirun-host/mesh.json</code></pre>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Flow</span>
+            <h2>NL do URI flow</h2>
+          </div>
+          <button type="button" data-copy-target="cmd-flow">Kopiuj</button>
+        </div>
+        <pre><code id="cmd-flow">~/.urirun-host/.venv/bin/urirun host ask "sprawdz stan laptopa i zapisz notatke" --execute --config ~/.urirun-host/mesh.json</code></pre>
+      </section>
+
       <section>
         <div class="section-head">
           <div>
@@ -342,76 +518,6 @@
       <section>
         <div class="section-head">
           <div>
-            <span class="eyebrow">Node</span>
-            <h2>Install + run w foreground</h2>
-          </div>
-          <button class="primary-copy" type="button" data-copy-target="cmd-install">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-install">curl -fsSL https://get.ifuri.com/node.sh | bash</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Node</span>
-            <h2>Install + run w tle</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-background">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-background">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --background</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Node · usługa</span>
-            <h2>Boot service (Linux / macOS)</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-service">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-service">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --service</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Windows</span>
-            <h2>Install + run (PowerShell)</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-windows">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-windows">irm https://get.ifuri.com/node.ps1 | iex</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Host</span>
-            <h2>Dodaj node do mesh</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-host">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-host">urirun host init --name host
-urirun host add-node laptop http://NODE_IP:8765
-urirun host nodes
-urirun host routes
-urirun host agents</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Flow</span>
-            <h2>NL do URI flow</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-flow">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-flow">urirun host ask "sprawdz stan laptopa i zapisz notatke" --execute</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
             <span class="eyebrow">Links</span>
             <h2>Linki do skopiowania</h2>
           </div>
@@ -422,6 +528,10 @@ urirun host agents</code></pre>
             <button type="button" data-copy-text="https://get.ifuri.com/node.sh">Kopiuj URL</button>
           </li>
           <li class="link-item">
+            <a href="https://get.ifuri.com/host.sh" id="url-host">https://get.ifuri.com/host.sh</a>
+            <button type="button" data-copy-text="https://get.ifuri.com/host.sh">Kopiuj URL</button>
+          </li>
+          <li class="link-item">
             <a href="https://get.ifuri.com/node.ps1" id="url-ps1">https://get.ifuri.com/node.ps1</a>
             <button type="button" data-copy-text="https://get.ifuri.com/node.ps1">Kopiuj URL</button>
           </li>
@@ -430,8 +540,12 @@ urirun host agents</code></pre>
             <button type="button" data-copy-text="https://github.com/if-uri/get">Kopiuj URL</button>
           </li>
           <li class="link-item">
-            <a href="https://raw.githubusercontent.com/if-uri/get/main/node.sh" id="url-raw">https://raw.githubusercontent.com/if-uri/get/main/node.sh</a>
+            <a href="https://raw.githubusercontent.com/if-uri/get/main/node.sh" id="url-raw-node">raw.githubusercontent.com/if-uri/get/main/node.sh</a>
             <button type="button" data-copy-text="https://raw.githubusercontent.com/if-uri/get/main/node.sh">Kopiuj URL</button>
+          </li>
+          <li class="link-item">
+            <a href="https://raw.githubusercontent.com/if-uri/get/main/host.sh" id="url-raw-host">raw.githubusercontent.com/if-uri/get/main/host.sh</a>
+            <button type="button" data-copy-text="https://raw.githubusercontent.com/if-uri/get/main/host.sh">Kopiuj URL</button>
           </li>
         </ul>
         <p class="small">Raw GitHub URL zostaje jako awaryjny fallback, gdy domena lub Plesk sa niedostepne.</p>
@@ -439,7 +553,7 @@ urirun host agents</code></pre>
     </div>
 
     <footer>
-      `node.sh` instaluje `urirun` z GitHuba, tworzy bindings v2, kompiluje registry i startuje lokalny node HTTP.
+      `host.sh` tworzy mesh operatora, a `node.sh` instaluje `urirun`, tworzy bindings v2, kompiluje registry i startuje lokalny node HTTP.
       <p class="eco-links">
         <a href="https://ifuri.com" rel="noopener">ifuri.com</a> ·
         <a href="https://connect.ifuri.com" rel="noopener">connectory</a> ·

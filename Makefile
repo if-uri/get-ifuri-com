@@ -6,9 +6,14 @@ serve:
 	python3 -m http.server $(PORT)
 
 test:
+	bash -n host.sh
 	bash -n node.sh
+	bash -n scripts/deploy-plesk.sh
 	bash -n scripts/smoke-node.sh
 	bash -n scripts/smoke-connectors.sh
+	grep -q 'https://get.ifuri.com/host.sh' index.html
+	grep -q 'https://get.ifuri.com/node.sh' index.html
+	python3 scripts/check_site.py
 	python3 -m http.server 0 >/tmp/ifuri-get-test.log 2>&1 & echo $$! > /tmp/ifuri-get-test.pid
 	kill "$$(cat /tmp/ifuri-get-test.pid)"
 

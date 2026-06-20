@@ -1,9 +1,40 @@
 # if-uri/get
 
-Static installer endpoint for `urirun` nodes.
+Static installer endpoint for `urirun` hosts and nodes.
 
-The goal is intentionally simple: a node computer should be able to install and
-start an `urirun node` with one command from `get.ifuri.com`.
+The goal is intentionally simple: a host computer should be able to bootstrap
+the operator mesh, and a node computer should be able to install and start an
+`urirun node`, each with one command from `get.ifuri.com`.
+
+## Host one-liner
+
+Install the host role (the machine that registers and drives nodes) with one
+command. It installs `urirun`, runs `host init`, and can register nodes inline:
+
+```bash
+curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio
+```
+
+With an existing node:
+
+```bash
+curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio --add-node laptop=http://192.168.1.20:8765
+```
+
+Start the operator dashboard after setup with `--dashboard`. The installer
+creates `~/.urirun-host/.venv` and `~/.urirun-host/mesh.json`.
+
+### Host installer options
+
+```txt
+--name NAME          Host name. Default: hostname.
+--dir PATH           Install directory. Default: ~/.urirun-host.
+--python PATH        Python executable. Default: python3.
+--add-node NAME=URL  Register a node now; can be repeated.
+--dashboard          Start the operator dashboard after setup.
+--dashboard-port N   Dashboard port. Default: 8194.
+--help               Show help.
+```
 
 ## Node one-liner
 
@@ -59,18 +90,6 @@ The installer creates:
 - `~/.urirun-node/node.json`,
 - `~/.urirun-node/run-node.sh`.
 
-## Host one-liner
-
-Install the host role (the machine that registers and drives nodes) with one
-command. It installs `urirun`, runs `host init`, and can register nodes inline:
-
-```bash
-curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio --add-node laptop=http://192.168.1.20:8765
-```
-
-Start the operator dashboard after setup with `--dashboard`. The installer
-creates `~/.urirun-host/.venv` and `~/.urirun-host/mesh.json`.
-
 ## Laptop-to-host LAN flow
 
 A minimal two-machine setup:
@@ -123,7 +142,7 @@ export OPENAI_API_KEY=...
   --registry ~/.urirun-node/registry.json --execute
 ```
 
-## Installer options
+## Node installer options
 
 ```txt
 --name NAME       Node name used as URI target. Default: hostname.
@@ -159,48 +178,48 @@ make service-smoke  # Linux only: creates a temporary systemd --user unit, then 
 
 ## Pinned urirun version
 
-`node.sh` pins the installed `urirun` to a released tag (default `v0.3.14`) for
-reproducible installs rather than tracking `@main`. Override it with the
-`URIRUN_REF` environment variable (a git tag or branch), or `URIRUN_GIT_URL` for
-a custom source:
+`host.sh` and `node.sh` pin the installed `urirun` to a released tag (default
+`v0.3.14`) for reproducible installs rather than tracking `@main`. Override it
+with the `URIRUN_REF` environment variable (a git tag or branch), or
+`URIRUN_GIT_URL` for a custom source:
 
 ```bash
+curl -fsSL https://get.ifuri.com/host.sh | URIRUN_REF=v0.3.14 bash
 curl -fsSL https://get.ifuri.com/node.sh | URIRUN_REF=v0.3.14 bash
 ```
 
 The Windows installer (`node.ps1`) pins the same default and accepts `-Ref` (or
 `URIRUN_REF`).
 
-## Fallback URL
+## Fallback URLs
 
-If DNS for `get.ifuri.com` is not ready yet, use the raw GitHub URL:
+If DNS for `get.ifuri.com` or the Plesk vhost is not ready yet, use the raw
+GitHub URLs:
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/if-uri/get/main/host.sh | bash -s -- --name studio
 curl -fsSL https://raw.githubusercontent.com/if-uri/get/main/node.sh | bash
 ```
 
 ## Domain setup
 
-GitHub Pages is configured for `get.ifuri.com` from the repository root.
-The DNS record for `get.ifuri.com` must point to GitHub Pages:
+The production endpoint is deployed to the Plesk vhost for `get.ifuri.com`.
+The DNS record for `get.ifuri.com` must point at the ifURI server:
 
 ```txt
-get.ifuri.com. CNAME if-uri.github.io.
+get.ifuri.com. A 217.160.250.222
 ```
 
-or, if the DNS provider does not support CNAME on this host, use GitHub Pages A
-records:
-
-```txt
-185.199.108.153
-185.199.109.153
-185.199.110.153
-185.199.111.153
-```
+Deployment uses `make deploy`, which publishes the static page and installer
+files to `/var/www/vhosts/ifuri.com/get.ifuri.com`.
 
 ## Verify the installer (optional)
 
 ```bash
+curl -fsSLO https://get.ifuri.com/host.sh
+curl -fsSL  https://get.ifuri.com/host.sh.sha256 | sha256sum -c -   # expects: host.sh: OK
+bash host.sh --help
+
 curl -fsSLO https://get.ifuri.com/node.sh
 curl -fsSL  https://get.ifuri.com/node.sh.sha256 | sha256sum -c -   # expects: node.sh: OK
 bash node.sh --help            # inspect before running; use --no-start / --dry-run to preview
