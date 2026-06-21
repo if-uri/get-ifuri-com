@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Author: Tom Sapletta · https://tom.sapletta.com
-# Part of the ifURI solution.
-
-# Publish get.ifuri.com (static installer landing).
+# Publish get.ifuri.com (ifURI app download page) to Plesk.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REMOTE="${IFURI_DEPLOY_HOST:-ifuri@ifuri.com}"
 DOCROOT="${IFURI_GET_DOCROOT:-/var/www/vhosts/ifuri.com/get.ifuri.com}"
-echo "== deploy get.ifuri.com =="
-rsync -az --delete --exclude '.git' --exclude 'scripts' --exclude 'Makefile' --exclude 'CNAME' --exclude 'host.sh.sha256' --exclude 'node.sh.sha256' \
+
+python3 "${ROOT}/scripts/check_site.py"
+echo "== deploy get.ifuri.com -> ${REMOTE}:${DOCROOT} =="
+rsync -az --delete --exclude '.git' --exclude 'scripts' --exclude 'Makefile' \
+  --exclude 'CNAME' --exclude '*.md' --exclude '.github' \
   "${ROOT}/" "${REMOTE}:${DOCROOT}/"
-ssh "${REMOTE}" "cd '${DOCROOT}' && find . -type d -exec chmod 755 {} + && find . -type f -exec chmod 644 {} + && sha256sum host.sh > host.sh.sha256 && sha256sum node.sh > node.sh.sha256 && chmod 644 host.sh.sha256 node.sh.sha256"
+ssh "${REMOTE}" "cd '${DOCROOT}' && find . -type d -exec chmod 755 {} + && find . -type f -exec chmod 644 {} +"
 curl -fsSI "https://get.ifuri.com/" | head -3 || true
 echo done

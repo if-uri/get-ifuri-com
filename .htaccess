@@ -1,3 +1,3 @@
-# get.ifuri.com — short links
-# Latest ifURI desktop app -> GitHub Releases
-Redirect 302 /app https://github.com/if-uri/app/releases/latest
+# The urirun node/host installers moved to get.urirun.com
+RedirectMatch 301 ^/(node|host)\.sh$ https://get.urirun.com/$1.sh
+RedirectMatch 301 ^/node\.ps1$ https://get.urirun.com/node.ps1

@@ -1,31 +1,10 @@
-.PHONY: serve test smoke connector-smoke service-smoke
-
+.PHONY: serve test deploy help
 PORT ?= 8199
-
-serve:
+help:
+	@grep -E "^[a-zA-Z_-]+:.*?## .*$$" $(MAKEFILE_LIST) | awk "BEGIN{FS=\":.*?## \"}{printf \"  %-10s %s\\n\",\$$1,\$$2}"
+serve: ## Serve locally on http://127.0.0.1:$(PORT)
 	python3 -m http.server $(PORT)
-
-test:
-	bash -n host.sh
-	bash -n node.sh
-	bash -n scripts/deploy-plesk.sh
-	bash -n scripts/smoke-node.sh
-	bash -n scripts/smoke-connectors.sh
-	grep -q 'https://get.ifuri.com/host.sh' index.html
-	grep -q 'https://get.ifuri.com/node.sh' index.html
+test: ## Validate the static app-download site
 	python3 scripts/check_site.py
-	python3 -m http.server 0 >/tmp/ifuri-get-test.log 2>&1 & echo $$! > /tmp/ifuri-get-test.pid
-	kill "$$(cat /tmp/ifuri-get-test.pid)"
-
-smoke:
-	bash scripts/smoke-node.sh
-
-connector-smoke:
-	bash scripts/smoke-connectors.sh
-
-service-smoke:
-	bash scripts/smoke-service.sh
-
-.PHONY: deploy
 deploy: ## Publish to get.ifuri.com (Plesk)
 	bash scripts/deploy-plesk.sh

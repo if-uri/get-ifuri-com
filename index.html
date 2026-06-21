@@ -1,625 +1,88 @@
 <!doctype html>
-<html lang="pl">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>get.ifuri.com - urirun host and node installers</title>
-  <meta name="description" content="One-line installers for urirun host and node computers in the if-uri mesh.">
-  <style>
-    :root {
-      color-scheme: dark;
-      --radius: 18px;
-      --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-lg: 19px; --fs-xl: 22px;
-      --h1: clamp(30px, 5vw, 52px); --h2: clamp(22px, 3vw, 30px);
-      --bg: #1E1B4B;
-      --ink: #EEF2FF;
-      --muted: #A5B4FC;
-      --line: rgba(255, 255, 255, 0.15);
-      --panel: rgba(255, 255, 255, 0.06);
-      --soft: rgba(255, 255, 255, 0.05);
-      --accent: #4F46E5;
-      --accent-ink: #C7D2FE;
-      --blue: #818CF8;
-      --code: #0F172A;
-      --code-line: rgba(255, 255, 255, 0.12);
-      --ok: #34D399;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(900px 520px at 88% -8%, rgba(79, 70, 229, 0.20), transparent 60%),
-        linear-gradient(180deg, var(--bg), #191640);
-      color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: var(--fs-md);
-      line-height: 1.55;
-    }
-
-    main {
-      width: min(100% - 28px, 760px);
-      margin: 0 auto;
-      padding: 28px 0 44px;
-    }
-
-    header {
-      padding: 10px 0 22px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 24px;
-      font-weight: 750;
-    }
-
-    .mark {
-      display: grid;
-      width: 38px;
-      height: 38px;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      background: linear-gradient(135deg, #4F46E5, #6366F1);
-      color: #fff;
-      font-weight: 850;
-    }
-
-    h1 {
-      margin: 0 0 12px;
-      font-size: var(--h1);
-      line-height: 1.04;
-      letter-spacing: 0;
-    }
-
-    .lead {
-      margin: 0;
-      color: var(--muted);
-      font-size: var(--fs-lg);
-    }
-
-    .quick-note {
-      margin-top: 18px;
-      padding: 13px 14px;
-      border: 1px solid rgba(52, 211, 153, 0.3);
-      border-radius: var(--radius);
-      background: rgba(52, 211, 153, 0.08);
-      color: var(--accent-ink);
-      font-size: var(--fs-sm);
-    }
-
-    .stack {
-      display: grid;
-      gap: 14px;
-      margin-top: 20px;
-    }
-
-    .role-list,
-    .command-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .role-row,
-    .command-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 12px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .role-row:first-child,
-    .command-row:first-child {
-      border-top: 0;
-      padding-top: 0;
-    }
-
-    .role-title {
-      margin: 0 0 4px;
-      color: var(--ink);
-      font-weight: 800;
-    }
-
-    .role-desc {
-      margin: 0;
-      font-size: var(--fs-sm);
-    }
-
-    section {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: var(--radius);
-      padding: 22px;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: var(--fs-xl);
-      line-height: 1.25;
-      letter-spacing: 0;
-    }
-
-    .eyebrow {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--ok);
-      font-size: var(--fs-xs);
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-    }
-
-    p {
-      margin: 0 0 12px;
-      color: var(--muted);
-    }
-
-    pre {
-      overflow-x: auto;
-      margin: 0;
-      padding: 14px;
-      background: var(--code);
-      color: #E0E7FF;
-      border-radius: 14px;
-      border: 1px solid var(--code-line);
-      font-size: var(--fs-sm);
-      line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    code {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    }
-
-    button {
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--panel);
-      color: var(--ink);
-      cursor: pointer;
-      font: inherit;
-      font-size: var(--fs-sm);
-      font-weight: 700;
-      padding: 9px 13px;
-      white-space: nowrap;
-    }
-
-    button:hover {
-      border-color: var(--accent);
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    button:focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    button[data-state="copied"] {
-      border-color: rgba(52, 211, 153, 0.4);
-      background: rgba(52, 211, 153, 0.12);
-      color: var(--ok);
-    }
-
-    .primary-copy {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #ffffff;
-    }
-
-    .primary-copy:hover {
-      background: #4338CA;
-      border-color: #4338CA;
-    }
-
-    .link-list {
-      display: grid;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .link-list + .small {
-      margin-top: 12px;
-    }
-
-    .link-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
-      padding: 11px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--soft);
-    }
-
-    a {
-      min-width: 0;
-      color: var(--blue);
-      overflow-wrap: anywhere;
-      text-decoration: none;
-      font-weight: 680;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .small {
-      color: var(--muted);
-      font-size: var(--fs-sm);
-    }
-
-    .status-line {
-      min-height: 24px;
-      margin: 14px 0 0;
-      color: var(--ok);
-      font-size: var(--fs-sm);
-      font-weight: 650;
-    }
-
-    footer {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: var(--fs-sm);
-    }
-
-    @media (max-width: 640px) {
-      main {
-        width: min(100% - 22px, 760px);
-        padding-top: 18px;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      .lead {
-        font-size: 1rem;
-      }
-
-      section {
-        padding: 15px;
-      }
-
-      .section-head,
-      .link-item,
-      .role-row,
-      .command-row {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        display: grid;
-      }
-
-      button {
-        width: 100%;
-      }
-    }
-  </style>
-  <link rel="canonical" href="https://get.ifuri.com/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://get.ifuri.com/" />
-  <meta property="og:title" content="get.ifuri.com - urirun host and node installers" />
-  <meta property="og:description" content="One-line installers for urirun host and node computers in the if-uri mesh." />
-  <meta property="og:image" content="https://ifuri.com/assets/og-ifuri.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="get.ifuri.com - urirun host and node installers" />
-  <meta name="twitter:description" content="One-line installers for urirun host and node computers in the if-uri mesh." />
-  <meta name="twitter:image" content="https://ifuri.com/assets/og-ifuri.png" />
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "get.ifuri.com - urirun host and node installers",
-  "name": "get.ifuri.com - urirun host and node installers",
-  "description": "One-line installers for urirun host and node computers in the if-uri mesh.",
-  "url": "https://get.ifuri.com/",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "get.ifuri.com",
-    "url": "https://get.ifuri.com/"
-  }
-}
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>get.ifuri.com — download the ifURI app</title>
+<meta name="description" content="Download the ifURI desktop app and Python package. Local-first URI runtime for flows, MCP, A2A, LLM and LAN apps.">
+<meta name="theme-color" content="#1E1B4B">
+<link rel="canonical" href="https://get.ifuri.com/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Download the ifURI app">
+<meta property="og:description" content="The ifURI desktop app and pip package — local-first URI runtime for flows, MCP, A2A and LAN apps.">
+<meta property="og:url" content="https://get.ifuri.com/">
+<meta property="og:image" content="https://ifuri.com/assets/og-ifuri.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ifuri.com/assets/og-ifuri.png">
+<style>
+:root{--bg:#1E1B4B;--bg2:#191640;--text:#EEF2FF;--muted:#A5B4FC;--line:rgba(255,255,255,.14);--green:#34D399;--violet:#4F46E5;--card:rgba(255,255,255,.06)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 520px at 88% -8%,rgba(79,70,229,.2),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.6;min-height:100vh}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:880px;margin:0 auto;padding:72px 24px}
+.eyebrow{text-transform:uppercase;letter-spacing:.18em;color:var(--green);font-weight:800;font-size:13px;margin:0 0 14px}
+h1{font-size:clamp(32px,6vw,56px);line-height:1.05;letter-spacing:-.02em;margin:0 0 16px}
+.lead{font-size:clamp(17px,2.2vw,21px);color:#cdd6ee;max-width:680px}
+.box{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:22px;margin-top:26px}
+.box h2{margin:0 0 12px;font-size:20px}
+pre{background:#0F172A;border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;font-size:14px;color:#E0E7FF;margin:0}
+code{font-family:ui-monospace,Menlo,Consolas,monospace}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.dl{display:flex;flex-direction:column;border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:12px;padding:14px;color:var(--text)}
+.dl b{font-size:15px}.dl span{color:var(--muted);font-size:13px;font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+.dl:hover{border-color:var(--green);text-decoration:none}
+.btn{display:inline-flex;align-items:center;padding:11px 18px;border-radius:10px;font-weight:700;border:1px solid var(--line);color:var(--text);margin-top:8px}
+.btn.primary{background:var(--violet);border-color:var(--violet);color:#fff}.btn:hover{border-color:var(--violet);text-decoration:none}
+.note{margin-top:26px;color:var(--muted);font-size:15px;border-top:1px solid var(--line);padding-top:20px}
+footer{max-width:880px;margin:0 auto;padding:24px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+</style>
 </head>
 <body>
-  <main>
-    <header>
-      <div class="brand"><span class="mark">if</span> get.ifuri.com</div>
-      <h1>Zainstaluj hosta albo node jednym poleceniem.</h1>
-      <p class="lead">
-        Host steruje siecią i uruchamia flow, node wystawia lokalne URI endpointy,
-        MCP oraz A2A dla hosta i aplikacji ifURI.
-      </p>
-      <div class="quick-note">
-        Node: port 8765, bind 0.0.0.0, pliki w ~/.urirun-node.
-        Host: mesh w ~/.urirun-host i komendy `urirun host ...`.
-        Jeśli port jest zajęty, instalator node wybierze kolejny wolny port.
-      </div>
-      <p class="status-line" id="copy-status" role="status" aria-live="polite"></p>
-    </header>
+<main class="wrap">
+  <p class="eyebrow">get.ifuri.com</p>
+  <h1>Download the ifURI app.</h1>
+  <p class="lead">The ifURI desktop app and Python package — one local-first interface for URI flows,
+    MCP tools, A2A agents, a local LLM and LAN devices.</p>
 
-    <div class="stack">
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Role</span>
-            <h2>Wybierz, co instalujesz</h2>
-          </div>
-        </div>
-        <div class="role-list">
-          <div class="role-row">
-            <div>
-              <p class="role-title">Host</p>
-              <p class="role-desc">Komputer operatora. Trzyma mesh, listę node'ów, routy, agentów i uruchamia flow.</p>
-            </div>
-            <button class="primary-copy" type="button" data-copy-target="cmd-host-install">Kopiuj host</button>
-          </div>
-          <div class="role-row">
-            <div>
-              <p class="role-title">Node</p>
-              <p class="role-desc">Komputer wykonawczy. Wystawia lokalny rejestr URI, MCP, A2A i endpoint HTTP.</p>
-            </div>
-            <button type="button" data-copy-target="cmd-node-background">Kopiuj node</button>
-          </div>
-          <div class="role-row">
-            <div>
-              <p class="role-title">Aplikacja</p>
-              <p class="role-desc">Interfejs operatora do hosta, node'ów, tras URI, MCP/A2A i zadań LLM.</p>
-            </div>
-            <a href="app/" rel="noopener">Otwórz app</a>
-          </div>
-        </div>
-      </section>
+  <div class="box">
+    <h2>Python package (all OSes)</h2>
+    <pre><code id="pip">python -m pip install …</code></pre>
+    <p style="margin:12px 0 0;color:var(--muted)">Then: <code>ifuri-app app</code> · <code>ifuri-app voice</code> · <code>ifuri-app init --scan-lan</code></p>
+  </div>
 
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Host</span>
-            <h2>Komputer sterujący</h2>
-          </div>
-          <button class="primary-copy" type="button" data-copy-target="cmd-host-install">Kopiuj</button>
-        </div>
-        <p>Uruchom na komputerze, z którego chcesz zarządzać node'ami i flow.</p>
-        <pre><code id="cmd-host-install">curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio</code></pre>
-        <div class="command-list">
-          <div class="command-row">
-            <div>
-              <p class="role-title">Host z dodaniem node'a</p>
-              <p class="role-desc">Użyj, gdy znasz adres node'a w LAN.</p>
-            </div>
-            <button type="button" data-copy-target="cmd-host-add">Kopiuj</button>
-          </div>
-          <pre><code id="cmd-host-add">curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio --add-node laptop=http://NODE_IP:8765</code></pre>
-          <div class="command-row">
-            <div>
-              <p class="role-title">Komendy po instalacji</p>
-              <p class="role-desc">Lista node'ów, tras URI, agentów MCP/A2A i dashboard.</p>
-            </div>
-            <button type="button" data-copy-target="cmd-host-admin">Kopiuj</button>
-          </div>
-          <pre><code id="cmd-host-admin">~/.urirun-host/.venv/bin/urirun host nodes --config ~/.urirun-host/mesh.json
-~/.urirun-host/.venv/bin/urirun host routes --config ~/.urirun-host/mesh.json
-~/.urirun-host/.venv/bin/urirun host agents --config ~/.urirun-host/mesh.json
-~/.urirun-host/.venv/bin/urirun host dashboard serve --config ~/.urirun-host/mesh.json</code></pre>
-        </div>
-      </section>
+  <div class="box">
+    <h2>Desktop builds <span id="ver" style="color:var(--muted);font-weight:400;font-size:15px"></span></h2>
+    <div class="cards" id="dl"><p class="dl"><b>Loading…</b><span>fetching the latest release from GitHub</span></p></div>
+    <a class="btn primary" id="releases" href="https://github.com/if-uri/app/releases/latest">All releases on GitHub →</a>
+  </div>
 
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Node</span>
-            <h2>Komputer wykonawczy</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-node-background">Kopiuj</button>
-        </div>
-        <p>Uruchom na laptopie, serwerze lub maszynie, która ma wykonywać komendy URI.</p>
-        <pre><code id="cmd-node-background">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --background</code></pre>
-        <div class="command-list">
-          <div class="command-row">
-            <div>
-              <p class="role-title">Foreground</p>
-              <p class="role-desc">Szybki test w terminalu.</p>
-            </div>
-            <button type="button" data-copy-target="cmd-node-foreground">Kopiuj</button>
-          </div>
-          <pre><code id="cmd-node-foreground">curl -fsSL https://get.ifuri.com/node.sh | bash</code></pre>
-          <div class="command-row">
-            <div>
-              <p class="role-title">Boot service</p>
-              <p class="role-desc">Linux systemd user lub macOS launchd, start po restarcie.</p>
-            </div>
-            <button type="button" data-copy-target="cmd-node-service">Kopiuj</button>
-          </div>
-          <pre><code id="cmd-node-service">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --service</code></pre>
-          <div class="command-row">
-            <div>
-              <p class="role-title">Node z connectorami</p>
-              <p class="role-desc">Od razu dodaje trasy HTTP check i time-tools do registry.</p>
-            </div>
-            <button type="button" data-copy-target="cmd-node-connectors">Kopiuj</button>
-          </div>
-          <pre><code id="cmd-node-connectors">curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --connectors http-check,time-tools --background</code></pre>
-        </div>
-      </section>
+  <p class="note">Installing a <strong>urirun node or host</strong> on a machine? That moved to
+    <a href="https://get.urirun.com/">get.urirun.com</a> —
+    <code>curl -fsSL https://get.urirun.com/node.sh | bash</code>.</p>
+</main>
+<footer>ifURI — if URI, then flow. · <a href="https://ifuri.com/">ifuri.com</a> · <a href="https://docs.ifuri.com/">docs</a></footer>
 
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Windows</span>
-            <h2>Node na Windows</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-windows">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-windows">irm https://get.ifuri.com/node.ps1 | iex</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">LAN</span>
-            <h2>Minimalny przepływ host + node</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-lan-flow">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-lan-flow"># 1. Na komputerze node:
-curl -fsSL https://get.ifuri.com/node.sh | bash -s -- --name laptop --background
-
-# 2. Na komputerze host:
-curl -fsSL https://get.ifuri.com/host.sh | bash -s -- --name studio --add-node laptop=http://NODE_IP:8765
-~/.urirun-host/.venv/bin/urirun host routes --config ~/.urirun-host/mesh.json</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Flow</span>
-            <h2>NL do URI flow</h2>
-          </div>
-          <button type="button" data-copy-target="cmd-flow">Kopiuj</button>
-        </div>
-        <pre><code id="cmd-flow">~/.urirun-host/.venv/bin/urirun host ask "sprawdz stan laptopa i zapisz notatke" --execute --config ~/.urirun-host/mesh.json</code></pre>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Aplikacja</span>
-            <h2>Po instalacji: jeden interfejs do MCP, A2A i LLM</h2>
-          </div>
-        </div>
-        <a href="assets/screenshots/app.png" target="_blank" rel="noopener" style="display:block;margin-top:6px;border:1px solid rgba(255,255,255,.14);border-radius:12px;overflow:hidden">
-          <img src="assets/screenshots/app.png" alt="Zrzut ekranu aplikacji ifURI: endpointy MCP, A2A i LLM oraz czat" width="1200" height="750" loading="lazy" style="width:100%;height:auto;display:block">
-        </a>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Links</span>
-            <h2>Linki do skopiowania</h2>
-          </div>
-        </div>
-        <ul class="link-list">
-          <li class="link-item">
-            <a href="https://get.ifuri.com/node.sh" id="url-script">https://get.ifuri.com/node.sh</a>
-            <button type="button" data-copy-text="https://get.ifuri.com/node.sh">Kopiuj URL</button>
-          </li>
-          <li class="link-item">
-            <a href="https://get.ifuri.com/host.sh" id="url-host">https://get.ifuri.com/host.sh</a>
-            <button type="button" data-copy-text="https://get.ifuri.com/host.sh">Kopiuj URL</button>
-          </li>
-          <li class="link-item">
-            <a href="https://get.ifuri.com/node.ps1" id="url-ps1">https://get.ifuri.com/node.ps1</a>
-            <button type="button" data-copy-text="https://get.ifuri.com/node.ps1">Kopiuj URL</button>
-          </li>
-          <li class="link-item">
-            <a href="https://github.com/if-uri/get" id="url-repo">https://github.com/if-uri/get</a>
-            <button type="button" data-copy-text="https://github.com/if-uri/get">Kopiuj URL</button>
-          </li>
-          <li class="link-item">
-            <a href="https://raw.githubusercontent.com/if-uri/get/main/node.sh" id="url-raw-node">raw.githubusercontent.com/if-uri/get/main/node.sh</a>
-            <button type="button" data-copy-text="https://raw.githubusercontent.com/if-uri/get/main/node.sh">Kopiuj URL</button>
-          </li>
-          <li class="link-item">
-            <a href="https://raw.githubusercontent.com/if-uri/get/main/host.sh" id="url-raw-host">raw.githubusercontent.com/if-uri/get/main/host.sh</a>
-            <button type="button" data-copy-text="https://raw.githubusercontent.com/if-uri/get/main/host.sh">Kopiuj URL</button>
-          </li>
-        </ul>
-        <p class="small">Raw GitHub URL zostaje jako awaryjny fallback, gdy domena lub Plesk sa niedostepne.</p>
-      </section>
-    </div>
-
-    <footer>
-      `host.sh` tworzy mesh operatora, a `node.sh` instaluje `urirun`, tworzy bindings v2, kompiluje registry i startuje lokalny node HTTP.
-      <p class="eco-links">
-        <a href="https://ifuri.com" rel="noopener">ifuri.com</a> ·
-        <a href="https://connect.ifuri.com" rel="noopener">connectory</a> ·
-        <a href="https://ifuri.com/urirun/" rel="noopener">dokumentacja</a>
-      </p>
-    </footer>
-  </main>
-
-  <script>
-    const statusLine = document.getElementById('copy-status');
-
-    function copyTextFallback(text) {
-      const field = document.createElement('textarea');
-      field.value = text;
-      field.setAttribute('readonly', '');
-      field.style.position = 'fixed';
-      field.style.left = '-9999px';
-      document.body.appendChild(field);
-      field.select();
-      document.execCommand('copy');
-      field.remove();
-    }
-
-    async function copyText(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-        return;
-      }
-      copyTextFallback(text);
-    }
-
-    function textForButton(button) {
-      if (button.dataset.copyText) {
-        return button.dataset.copyText;
-      }
-      const target = document.getElementById(button.dataset.copyTarget);
-      return target ? target.textContent.trim() : '';
-    }
-
-    document.addEventListener('click', async (event) => {
-      const button = event.target.closest('button[data-copy-target], button[data-copy-text]');
-      if (!button) {
-        return;
-      }
-
-      const text = textForButton(button);
-      if (!text) {
-        return;
-      }
-
-      const label = button.textContent;
-      try {
-        await copyText(text);
-        button.textContent = 'Skopiowano';
-        button.dataset.state = 'copied';
-        statusLine.textContent = 'Skopiowano do schowka.';
-      } catch (error) {
-        statusLine.textContent = 'Nie udalo sie skopiowac. Zaznacz tekst recznie.';
-      }
-
-      window.setTimeout(() => {
-        button.textContent = label;
-        button.removeAttribute('data-state');
-      }, 1600);
+<script>
+(function(){
+  var REPO="if-uri/app";
+  var pip=document.getElementById("pip"), dl=document.getElementById("dl"), ver=document.getElementById("ver");
+  pip.textContent='python -m pip install "git+https://github.com/'+REPO+'.git"';
+  fetch("https://api.github.com/repos/"+REPO+"/releases/latest").then(function(r){return r.ok?r.json():Promise.reject()}).then(function(rel){
+    ver.textContent=rel.tag_name||"";
+    var assets=(rel.assets||[]).filter(function(a){return /\.(dmg|exe|AppImage|deb|zip|tar\.gz|whl)$/i.test(a.name)});
+    if(!assets.length){dl.innerHTML='<p class="dl"><b>No binaries in the latest release</b><span>Use the pip install above, or open GitHub Releases.</span></p>';return;}
+    dl.innerHTML="";
+    assets.forEach(function(a){
+      var el=document.createElement("a");el.className="dl";el.href=a.browser_download_url;el.rel="noopener";
+      el.innerHTML="<b>"+a.name.replace(/^.*?[-_]/,"")+"</b><span>"+a.name+"</span>";
+      dl.appendChild(el);
     });
-  </script>
-  <script src="/ifuri-ecobar.js" defer></script>
+    var whl=assets.find(function(a){return /\.whl$/i.test(a.name)});
+    if(whl) pip.textContent='python -m pip install "'+whl.browser_download_url+'"';
+  }).catch(function(){
+    dl.innerHTML='<a class="dl" href="https://github.com/'+REPO+'/releases/latest"><b>Open GitHub Releases</b><span>github.com/'+REPO+'/releases</span></a>';
+  });
+})();
+</script>
+<script src="https://ifuri.com/assets/ifuri-ecobar.js" defer></script>
 </body>
 </html>
