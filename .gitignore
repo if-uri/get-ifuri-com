@@ -4,3 +4,4 @@
 .venv/
 dist/
 tmp/
+.code2llm_cache

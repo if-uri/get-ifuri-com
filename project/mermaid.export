@@ -1,0 +1,28 @@
+flowchart TD
+%% generated in 0.00s
+    subgraph ifuri_ecobar
+        ifuri_ecobar__params["params"]
+        ifuri_ecobar__lang["lang"]
+        ifuri_ecobar__view["view"]
+        ifuri_ecobar__host("host CC=9")
+        ifuri_ecobar__curView("curView CC=9")
+        ifuri_ecobar__isActive("isActive CC=9")
+        ifuri_ecobar__esc["esc"]
+        ifuri_ecobar__navHTML["navHTML"]
+        ifuri_ecobar__label["label"]
+        ifuri_ecobar__hostEl["hostEl"]
+        ifuri_ecobar__sr["sr"]
+        ifuri_ecobar__p["p"]
+    end
+    subgraph scripts__check_site
+        scripts__check_site__Bal____init__["__init__"]
+        scripts__check_site__Bal__handle_starttag["handle_starttag"]
+        scripts__check_site__Bal__handle_endtag["handle_endtag"]
+        scripts__check_site__main("main CC=8")
+    end
+    ifuri_ecobar__navHTML --> ifuri_ecobar__esc
+    ifuri_ecobar__navHTML --> ifuri_ecobar__isActive
+
+    classDef highCC fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    classDef medCC fill:#ffd43b,stroke:#f08c00,color:#000
+    class ifuri_ecobar__host,ifuri_ecobar__curView,ifuri_ecobar__isActive,scripts__check_site__main medCC

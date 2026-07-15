@@ -1,0 +1,123 @@
+name: Code Quality Improvement
+project_name: ''
+project_type: prefactoring
+domain: dev-tools
+goal: Improve code quality using prefact
+goals:
+- Fix all prefact-detected issues
+- Improve code maintainability
+- Ensure consistent code style
+quality_gates:
+- metric: Prefact Issues
+  threshold: '0'
+sprints:
+- id: sprint-1
+  name: Code Quality Improvements
+  duration: 2 weeks
+  objectives:
+  - Fix code quality issues
+  task_patterns:
+  - id: ticket-08ad3628
+    name: Fix ast-print-statements issues
+    description: Resolve 5 ast-print-statements issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - scripts/check_site.py
+    rule_id: ast-print-statements
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c4bfcd99
+    name: Fix ast-missing-return-type issues
+    description: Resolve 3 ast-missing-return-type issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - scripts/check_site.py
+    rule_id: ast-missing-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-fbb930d0
+    name: Fix ruff-print-statements issues
+    description: Resolve 5 ruff-print-statements issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - scripts/check_site.py
+    rule_id: ruff-print-statements
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-655fda1d
+    name: Fix ruff-sorted-imports issues
+    description: Resolve 1 ruff-sorted-imports issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - scripts/check_site.py
+    rule_id: ruff-sorted-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-aaee1667
+    name: Fix smart-return-type issues
+    description: Resolve 3 smart-return-type issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - scripts/check_site.py
+    rule_id: smart-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-22e1db37
+    name: Fix string-concat-fstring issues
+    description: Resolve 2 string-concat-fstring issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - scripts/check_site.py
+    rule_id: string-concat-fstring
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3503d95b
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - scripts/check_site.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a510713e
+    name: Fix import-optimization issues
+    description: Resolve 2 import-optimization issues in scripts/check_site.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - scripts/check_site.py
+    rule_id: import-optimization
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced

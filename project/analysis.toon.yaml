@@ -1,0 +1,47 @@
+# code2llm | 8f 266L | shell:3,xml:1,txt:1,javascript:1,python:1 | 2026-07-14
+# generated in 0.00s
+# CC̅=3.2 | critical:0/16 | dups:0 | cycles:0
+
+HEALTH[0]: ok
+
+REFACTOR[0]: none needed
+
+PIPELINES[9]:
+  [1] Src [host]: host
+      PURITY: 100% pure
+  [2] Src [curView]: curView
+      PURITY: 100% pure
+  [3] Src [navHTML]: navHTML → esc
+      PURITY: 100% pure
+  [4] Src [hostEl]: hostEl
+      PURITY: 100% pure
+  [5] Src [sr]: sr
+      PURITY: 100% pure
+  [6] Src [__init__]: __init__
+      PURITY: 100% pure
+  [7] Src [handle_starttag]: handle_starttag
+      PURITY: 100% pure
+  [8] Src [handle_endtag]: handle_endtag
+      PURITY: 100% pure
+  [9] Src [main]: main
+      PURITY: 100% pure
+
+LAYERS:
+  ./                              CC̄=3.2    ←in:0  →out:0
+  │ ifuri-ecobar.js            108L  0C   12m  CC=9      ←0
+  │ project.sh                  66L  0C    0m  CC=0.0    ←0
+  │ Makefile                    10L  0C    0m  CC=0.0    ←0
+  │ sitemap.xml                  4L  0C    0m  CC=0.0    ←0
+  │ tree.sh                      4L  0C    0m  CC=0.0    ←0
+  │ robots.txt                   3L  0C    0m  CC=0.0    ←0
+  │
+  scripts/                        CC̄=3.2    ←in:0  →out:0
+  │ deploy-plesk.sh             42L  0C    0m  CC=0.0    ←0
+  │ check_site                  29L  1C    4m  CC=8      ←0
+  │
+
+COUPLING: no cross-package imports detected
+
+EXTERNAL:
+  validation: run `vallm batch .` → validation.toon
+  duplication: run `redup scan .` → duplication.toon

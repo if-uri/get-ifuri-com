@@ -1,0 +1,19 @@
+# get-ifuri-com | 16 func | 2f | 266L | shell | 2026-07-14
+# generated in 0.00s
+
+HEALTH:
+  CC̄=3.2  critical=0 (limit:10)  dup=0  cycles=0
+
+MODULES[8] (top by size):
+  M[ifuri-ecobar.js] 108L C:0 F:12 CC↑9 D:0 (javascript)
+  M[project.sh] 66L C:0 F:0 CC↑0 D:0 (shell)
+  M[scripts/deploy-plesk.sh] 42L C:0 F:0 CC↑0 D:0 (shell)
+  M[scripts/check_site.py] 29L C:1 F:4 CC↑8 D:0 (python)
+  M[Makefile] 10L C:0 F:0 CC↑0 D:0 ()
+  M[sitemap.xml] 4L C:0 F:0 CC↑0 D:0 (xml)
+  M[tree.sh] 4L C:0 F:0 CC↑0 D:0 (shell)
+  M[robots.txt] 3L C:0 F:0 CC↑0 D:0 (txt)
+  LANGS: shell:3/javascript:1/python:1/other:1/txt:1/xml:1
+
+EVOLUTION:
+  2026-07-14 CC̄=3.2 crit=0 266L // Automated analysis

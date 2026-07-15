@@ -1,0 +1,26 @@
+source: code2llm
+# generated in 0.00s
+schema: code2llm.planfile_tickets.v1
+project_root: /home/tom/github/if-uri/get-ifuri-com
+tickets:
+- signal: code2llm_smell_god_function
+  title: 'Address code smell: God Function: main'
+  description: 'code2llm reports `God Function: main` in `scripts/check_site.py:15`.
+
+
+    Function ''main'' is oversized: CC=8, fan-out=7, mutations=7.
+
+
+    Make the smallest refactor that removes the smell and run local tests.'
+  priority: normal
+  labels:
+  - llm-ready
+  - code2llm
+  - code-smell
+  - god-function
+  files:
+  - scripts/check_site.py
+  dedupe_key: 'code2llm:smell:god_function:scripts/check_site.py:15:God Function:
+    main'
+applied: []
+skipped: []

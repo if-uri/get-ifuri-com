@@ -1,0 +1,41 @@
+# get-ifuri-com | 8f 266L | xml:1,txt:1,javascript:1,shell:3,python:1 | 2026-07-14
+# generated in 0.00s
+# stats: 16 func | 0 cls | 8 mod | CC̄=3.2 | critical:0 | cycles:0
+# alerts[0]: none
+# hotspots[1]: main fan=7
+# evolution: baseline
+# Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
+M[8]:
+  Makefile,10
+  ifuri-ecobar.js,108
+  project.sh,66
+  robots.txt,3
+  scripts/check_site.py,29
+  scripts/deploy-plesk.sh,42
+  sitemap.xml,4
+  tree.sh,4
+D:
+  ifuri-ecobar.js:
+    e: params,lang,view,host,curView,isActive,esc,navHTML,label,hostEl,sr,p
+    params()
+    lang()
+    view()
+    host()
+    curView()
+    isActive()
+    esc()
+    navHTML()
+    label()
+    hostEl()
+    sr()
+    p()
+  scripts/check_site.py:
+    e: Bal,main
+    Bal(html.parser.HTMLParser): __init__(0),handle_starttag(2),handle_endtag(1)
+    main()
+  sitemap.xml:
+  robots.txt:
+  Makefile:
+  tree.sh:
+  project.sh:
+  scripts/deploy-plesk.sh:

@@ -1,0 +1,55 @@
+project: /home/tom/github/if-uri/get-ifuri-com
+generated_from: code2llm call graph analysis
+stats:
+  total_nodes: 3
+  total_edges: 2
+  modules_count: 1
+nodes:
+  ifuri-ecobar.isActive:
+    name: isActive
+    module: ifuri-ecobar
+    line: 47
+    cyclomatic_complexity: 9
+    calls_out: 1
+    calls_in: 1
+  ifuri-ecobar.esc:
+    name: esc
+    module: ifuri-ecobar
+    line: 61
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  ifuri-ecobar.navHTML:
+    name: navHTML
+    module: ifuri-ecobar
+    line: 63
+    cyclomatic_complexity: 3
+    calls_out: 4
+    calls_in: 0
+edges:
+- caller: ifuri-ecobar.navHTML
+  callee: ifuri-ecobar.esc
+  call_type: resolved
+- caller: ifuri-ecobar.navHTML
+  callee: ifuri-ecobar.isActive
+  call_type: resolved
+modules:
+  ifuri-ecobar:
+  - ifuri-ecobar.esc
+  - ifuri-ecobar.isActive
+  - ifuri-ecobar.navHTML
+entry_points:
+- ifuri-ecobar.curView
+- ifuri-ecobar.host
+- ifuri-ecobar.hostEl
+- ifuri-ecobar.label
+- ifuri-ecobar.lang
+- ifuri-ecobar.navHTML
+- ifuri-ecobar.p
+- ifuri-ecobar.params
+- ifuri-ecobar.sr
+- ifuri-ecobar.view
+- scripts.check_site.Bal.__init__
+- scripts.check_site.Bal.handle_endtag
+- scripts.check_site.Bal.handle_starttag
+- scripts.check_site.main
